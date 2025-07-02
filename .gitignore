@@ -1,0 +1,54 @@
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archivos de configuración local
+.env
+config.local.php
+database.local.php
+
+# Archivos de log
+*.log
+logs/
+
+# Archivos temporales
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Archivos de respaldo
+*.bak
+*.backup
+*.old
+
+# Archivos de sesión PHP
+sessions/
+
+# Archivos de caché
+cache/
+tmp/
+
+# Archivos de uploads (si los hay)
+uploads/
+
+# Archivos de configuración de base de datos con credenciales
+database.php.bak
+
+# Archivos de documentación temporal
+*.txt
+!README.md
+!LICENSE
+!futcamp(21).txt
+
+# Archivos de dependencias (si se usan)
+vendor/
+node_modules/ 

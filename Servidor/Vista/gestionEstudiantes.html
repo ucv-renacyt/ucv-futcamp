@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Estudiantes - Administrador Deportivo</title>
+     <link rel="icon" type="image/x-icon" href="img/ucvitoFut.ico">
+    <link rel="stylesheet" href="./css/gestionEstudiantes.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Mobile Menu Toggle - Añadido -->
+        <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <!-- Header -->
+            <div class="sidebar-header">
+                <div class="admin-info">
+                    <div class="admin-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="admin-text">
+                        <h1>ADMINISTRADOR</h1>
+                        <p>Sistema Deportivo</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="sidebar-nav">
+                <button class="nav-item active" onclick="window.location.href='./gestionEstudiantes.html'">
+                    <i class="fas fa-user"></i>
+                    <span>Gestión de Estudiantes</span>
+                </button>
+                <button class="nav-item" onclick="window.location.href='./historialReservas.html'">
+                    <i class="fas fa-history"></i>
+                    <span>Historial de reservas</span>
+                </button>
+                <button class="nav-item" onclick="window.location.href='./visualizacionHorarios.html'">
+                    <i class="fas fa-calendar"></i>
+                    <span>Visualización de Horarios</span>
+                </button>
+                <button class="nav-item" onclick="window.location.href='./registroReservas.html'">
+                    <i class="fas fa-trophy"></i>
+                    <span>Registro de Reservas</span>
+                </button>
+                <button class="nav-item" onclick="window.location.href='./gestionReservas.html'">
+                    <i class="fas fa-cogs"></i>
+                    <span>Gestión de Reservas</span>
+                </button>
+                <button class="nav-item" onclick="window.location.href='./perfilAdministrador.html'">
+                    <i class="fas fa-user-cog"></i>
+                    <span>Mi Perfil</span>
+                </button>
+            </nav>
+
+            <!-- Logout Button -->
+            <div class="sidebar-footer">
+                <button class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Sidebar Overlay - Añadido -->
+        <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="content-header">
+                <div class="header-info">
+                    <h2>Gestión de Estudiantes</h2>
+                    <p>Administra y controla todos los estudiantes del sistema</p>
+                </div>
+                <div class="header-actions">
+                    <div class="status-badge">
+                        <i class="fas fa-users"></i>
+                        <span id="total-usuarios">4 Estudiantes Registrados</span>
+                    </div>
+                    <button class="btn-add" onclick="agregarUsuario()">
+                        <i class="fas fa-user-plus"></i>
+                        Nuevo Estudiante
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content-body">
+                <div class="usuarios-container">
+                    <!-- Filtros y Búsqueda -->
+                    <div class="filters-section">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-input" placeholder="Buscar por código, usuario, nombre o email..." onkeyup="filtrarUsuarios()">
+                        </div>
+                        <div class="filter-buttons">
+                            <select id="filter-estado" onchange="filtrarUsuarios()">
+                                <option value="">Todos los estados</option>
+                                <option value="1">Activos</option>
+                                <option value="0">Inactivos</option>
+                            </select>
+                            <button class="btn-filter" onclick="limpiarFiltros()">
+                                <i class="fas fa-filter"></i>
+                                Limpiar Filtros
+                            </button>
+                            <button class="btn-export" onclick="exportarUsuarios()">
+                                <i class="fas fa-download"></i>
+                                Exportar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tabla de Usuarios -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-users"></i>
+                            Estudiantes Registrados en el Sistema
+                        </div>
+                        <div class="card-content">
+                            <div class="table-container">
+                                <table class="usuarios-table" id="usuarios-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Código</th>
+                                            <th>Usuario</th>
+                                            <th>Nombres</th>
+                                            <th>Teléfono</th>
+                                            <th>Email</th>
+                                            <th>Estado</th>
+                                            <th>Fecha Registro</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="usuarios-tbody">
+                                        <!-- Las filas se generarán dinámicamente -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paginación -->
+                    <div class="pagination-container">
+                        <div class="pagination-info">
+                            <span>Mostrando <span id="showing-count">4</span> de <span id="total-count">4</span> estudiantes</span>
+                        </div>
+                        <div class="pagination-controls">
+                            <button class="btn-page" onclick="cambiarPagina(-1)">
+                                <i class="fas fa-chevron-left"></i>
+                                Anterior
+                            </button>
+                            <span class="page-numbers">
+                                <button class="btn-page-number active">1</button>
+                            </span>
+                            <button class="btn-page" onclick="cambiarPagina(1)">
+                                Siguiente
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Modal de Agregar/Editar Usuario -->
+<div id="user-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modal-title">Agregar Estudiante</h3>
+            <button class="close-btn" onclick="cerrarModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="user-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="user-codigo">Código de Estudiante *</label>
+                        <input type="text" id="user-codigo" required maxlength="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-usuario">Usuario Institucional *</label>
+                        <input type="text" id="user-usuario" required maxlength="50">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="user-nombres">Nombres Completos *</label>
+                        <input type="text" id="user-nombres" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-telefono">Teléfono *</label>
+                        <input type="tel" id="user-telefono" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="user-email">Email *</label>
+                    <input type="email" id="user-email" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="user-estado">Estado</label>
+                        <select id="user-estado" required>
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="cerrarModal()">Cancelar</button>
+            <button class="btn-primary" onclick="guardarUsuario()">Guardar Estudiante</button>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="../Vista/js/gestionUsuarios.js"></script>
+    <script src="../Vista/js/logout.js"></script>
+    
+</body>
+</html>
